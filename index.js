@@ -5,12 +5,9 @@
 // Реализовать следующие методы функции конструктора:
 // MyArray.isMyArray(arg);  // подсказка: instanceof
 
-function MyArray() {
-  this.length = 0;
-  this.isMyArray = function (arg) {
-    return arg instanceof MyArray;
-  };
-}
+MyArray.isMyArray = function isMyArray(obj) {
+  return obj instanceof MyArray;
+};
 
 // Реализовать прототип для создаваемых коллекций, со следующими методами:
 // MyArray.prototype.push();
@@ -62,29 +59,37 @@ function MyArrayProto() {
 
   // MyArray.prototype.concat();
 
-  this.concat = function (arg) {
-    let newArg = [];
+  this.concat = function (myArrInstance) {
+    const result = new MyArray();
     for (let i = 0; i < this.length; i++) {
-      newArg[i] = this[i];
+      result.push(this[i]);
     }
-    for (let i = 0; i < arg.length; i++) {
-      newArg[this.length++] = arg[i];
+    for (let i = 0; i < myArrInstance.length; i++) {
+      result.push(myArrInstance[i]);
     }
-    return newArg;
+    return result;
   };
 
   // MyArray.prototype.reverse();
 
-  this.reverse = function reverse() {
-    for (let i = 0; i < this.length / 2; i++) {
-      const reverseItem = this[this.length - 1 - i];
-      this[this.length - 1 - i] = this[i];
-      this[i] = reverseItem;
+  this.reverse = function () {
+    const copy = Object.assign(new MyArray(), this);
+    for (let i = 0; i < this.length; i++) {
+      this[i] = copy.pop();
     }
     return this;
   };
-}
 
-// advanced
-// MyArray.prototype.forEach();
-// MyArray.prototype.map();
+  // advanced
+  // MyArray.prototype.forEach();
+  // MyArray.prototype.map();
+
+  this.map = function (cb) {
+    const result = new MyArray();
+    for (let i = 0; i < this.length; i++) {
+      const cbResult = cb(this[i], i, this);
+      result.push(cbResult);
+    }
+    return result;
+  };
+}
