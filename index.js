@@ -12,27 +12,33 @@ MyArray.isMyArray = function isMyArray(obj) {
 // Реализовать прототип для создаваемых коллекций, со следующими методами:
 // MyArray.prototype.push();
 
-function MyArrayProto() {
-  this.push = function push() {
+class MyArray {
+  constructor(...args) {
+    this.length = 0;
+    for (const item of args) {
+      this[this.length++] = item;
+    }
+  }
+  push() {
     for (let i = 0; i < arguments.length; i++) {
       this[this.length++] = arguments[i];
     }
     return this.length;
-  };
+  }
 
   // MyArray.prototype.pop(); // tip: delete
 
-  this.pop = function () {
+  pop() {
     if (this.length === 0) {
       return;
     }
     const lastItem = this[this.length - 1];
     delete this[--this.length];
     return lastItem;
-  };
+  }
   // MyArray.prototype.unshift();
 
-  this.unshift = function unshift() {
+  unshift() {
     for (let i = 0; i < this.length; i++) {
       this[arguments.length + i] = this[i];
     }
@@ -41,11 +47,11 @@ function MyArrayProto() {
     }
     this.length += arguments.length;
     return this.length;
-  };
+  }
 
   // MyArray.prototype.shift();
 
-  this.shift = function shift() {
+  shift() {
     if (this.length === 0) {
       return;
     }
@@ -55,11 +61,11 @@ function MyArrayProto() {
     }
     delete this[--this.length];
     return delItem;
-  };
+  }
 
   // MyArray.prototype.concat();
 
-  this.concat = function (myArrInstance) {
+  concat(myArrInstance) {
     const result = new MyArray();
     for (let i = 0; i < this.length; i++) {
       result.push(this[i]);
@@ -68,28 +74,28 @@ function MyArrayProto() {
       result.push(myArrInstance[i]);
     }
     return result;
-  };
+  }
 
   // MyArray.prototype.reverse();
 
-  this.reverse = function () {
+  reverse() {
     const copy = Object.assign(new MyArray(), this);
     for (let i = 0; i < this.length; i++) {
       this[i] = copy.pop();
     }
     return this;
-  };
+  }
 
   // advanced
   // MyArray.prototype.forEach();
   // MyArray.prototype.map();
 
-  this.map = function (cb) {
+  map(cb) {
     const result = new MyArray();
     for (let i = 0; i < this.length; i++) {
       const cbResult = cb(this[i], i, this);
       result.push(cbResult);
     }
     return result;
-  };
+  }
 }
